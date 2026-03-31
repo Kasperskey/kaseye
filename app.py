@@ -10,7 +10,7 @@ import urllib.parse
 import re
 import cv2
 import numpy as np
-import mediapipe as mp
+#import mediapipe as mp
 
 # --- КОНФИГУРАЦИЯ kaseye v4.4 ---
 st.set_page_config(page_title="kaseye", layout="wide", page_icon="🕸️")
