@@ -1,0 +1,9 @@
+streamlit
+pandas
+requests
+folium
+streamlit-folium
+Pillow
+opencv-python-headless
+numpy
+mediapipe
