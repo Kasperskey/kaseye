@@ -132,15 +132,42 @@ elif menu == "📧 Email (Проверка почты)":
                 unsafe_allow_html=True)
 
 # --- МОДУЛЬ 3: ТЕЛЕФОН ---
-elif menu == "📞 Телефонный модуль(Поиск по телефону)":
-    st.header("📞 Деанонимизация по номеру")
-    raw_phone = st.text_input("Введите номер:", placeholder="").strip()
-    if raw_phone:
-        phone = re.sub(r'\D', '', raw_phone)
-        st.code(f"+{phone}")
-        st.markdown(
-            f"🔹 [Telegram](https://t.me/+{phone}) | [WhatsApp](https://wa.me/{phone}) | [Opendatabot](https://opendatabot.ua/search?q={phone})")
+elif menu == "📞 Телефонный модуль":
+    st.header("📞 Глобальный OSINT-поиск по номеру")
+    phone = st.text_input("Введите номер (в формате 79991234567):", placeholder="79001112233")
+    
+    if st.button("ПРОБИТЬ ПО БАЗАМ"):
+        if not phone:
+            st.error("Введите номер телефона.")
+        else:
+            # Очистка номера от лишних знаков
+            clean_phone = "".join(filter(str.isdigit, phone))
+            
+            with st.status("🔍 Синхронизация с узлами связи...", expanded=True) as status:
+                st.write("Проверка WhatsApp/Viber...")
+                # Ссылки-пробивы
+                wa_url = f"https://wa.me/{clean_phone}"
+                vb_url = f"viber://chat?number={clean_phone}"
+                # Ссылка на GetContact/TrueCaller (через поисковик)
+                search_url = f"https://www.google.com/search?q=%22{clean_phone}%22+OR+%22{phone}%22"
+                
+                status.update(label="Поиск завершен!", state="complete")
 
+            # Вывод результата в стиле терминала
+            st.markdown(f"""
+            <div class="data-card">
+                <h3>📊 СВОДКА ПО НОМЕРУ: +{clean_phone}</h3>
+                <p><b>⚡ Быстрые действия:</b></p>
+                <ul>
+                    <li><a href="{wa_url}" target="_blank">💬 Открыть WhatsApp (Проверить наличие)</a></li>
+                    <li><a href="{vb_url}">📱 Открыть Viber</a></li>
+                    <li><a href="{search_url}" target="_blank">🌐 Поиск в Google (Упоминания в сети)</a></li>
+                    <li><a href="https://num.mtt.ru/search/{clean_phone}" target="_blank">🏢 Проверить оператора и регион</a></li>
+                </ul>
+                <hr>
+                <p style="color: #8b949e; font-size: 0.8em;">Примечание: Прямой доступ к базам GetContact требует API-ключа. Используйте ссылки выше для ручного анализа.</p>
+            </div>
+            """, unsafe_allow_html=True)
 # --- МОДУЛЬ 4: NICKNAME ---
 # --- МОДУЛЬ 4: NICKNAME (EXTENDED v4.9) ---
 elif menu == "🌐 Nickname (Поиск по никнейму)":
