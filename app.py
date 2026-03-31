@@ -133,41 +133,59 @@ elif menu == "📧 Email (Проверка почты)":
 
 # --- МОДУЛЬ 3: ТЕЛЕФОН ---
 elif menu == "📞 Телефонный модуль (Поиск по телефону)":
-    st.header("📞 Глобальный OSINT-поиск по номеру")
-    phone = st.text_input("Введите номер (в формате 79991234567):", placeholder="79001112233")
+    st.header("📞 Глобальный поиск по СНГ (RU/UA/BY)")
     
-    if st.button("ПРОБИТЬ ПО БАЗАМ"):
-        if not phone:
-            st.error("Введите номер телефона.")
+    phone_input = st.text_input("Введите номер (например: 7999..., 380..., 375...):", placeholder="79001112233")
+    
+    if st.button("ЗАПУСТИТЬ АНАЛИЗ"):
+        if not phone_input:
+            st.error("Ошибка: Номер не введен.")
         else:
-            # Очистка номера от лишних знаков
-            clean_phone = "".join(filter(str.isdigit, phone))
+            # Очистка номера
+            clean_num = "".join(filter(str.isdigit, phone_input))
             
-            with st.status("🔍 Синхронизация с узлами связи...", expanded=True) as status:
-                st.write("Проверка WhatsApp/Viber...")
-                # Ссылки-пробивы
-                wa_url = f"https://wa.me/{clean_phone}"
-                vb_url = f"viber://chat?number={clean_phone}"
-                # Ссылка на GetContact/TrueCaller (через поисковик)
-                search_url = f"https://www.google.com/search?q=%22{clean_phone}%22+OR+%22{phone}%22"
-                
-                status.update(label="Поиск завершен!", state="complete")
+            st.subheader(f"📊 Досье на номер: +{clean_num}")
+            
+            # Логика определения страны
+            country_info = "Неизвестный регион"
+            links = []
+            
+            # Базовые ссылки (универсальные)
+            links.append(f"[💬 Проверить WhatsApp](https://wa.me/{clean_num})")
+            links.append(f"[🔵 Проверить Telegram](https://t.me/+{clean_num})")
+            links.append(f"[🔍 Поиск в Google (упоминания)](https://www.google.com/search?q=%22{clean_num}%22)")
 
-            # Вывод результата в стиле терминала
-            st.markdown(f"""
-            <div class="data-card">
-                <h3>📊 СВОДКА ПО НОМЕРУ: +{clean_phone}</h3>
-                <p><b>⚡ Быстрые действия:</b></p>
-                <ul>
-                    <li><a href="{wa_url}" target="_blank">💬 Открыть WhatsApp (Проверить наличие)</a></li>
-                    <li><a href="{vb_url}">📱 Открыть Viber</a></li>
-                    <li><a href="{search_url}" target="_blank">🌐 Поиск в Google (Упоминания в сети)</a></li>
-                    <li><a href="https://num.mtt.ru/search/{clean_phone}" target="_blank">🏢 Проверить оператора и регион</a></li>
-                </ul>
-                <hr>
-                <p style="color: #8b949e; font-size: 0.8em;">Примечание: Прямой доступ к базам GetContact требует API-ключа. Используйте ссылки выше для ручного анализа.</p>
-            </div>
-            """, unsafe_allow_html=True)
+            if clean_num.startswith("7"):
+                country_info = "🇷🇺 Россия"
+                links.append(f"[🏢 Проверка оператора (Mtt.ru)](https://num.mtt.ru/search/{clean_num})")
+                links.append(f"[💬 Поиск в Viber](viber://chat?number={clean_num})")
+                links.append(f"[🔎 Проверить на ТелПоиск (РФ)](https://telpoisk.com/number/{clean_num})")
+            
+            elif clean_num.startswith("380"):
+                country_info = "🇺🇦 Украина"
+                links.append(f"[⚡ Телефонный справочник (UA)](https://nomer-telefona.com.ua/nomer/{clean_num})")
+                links.append(f"[🔎 Кто звонил (UA)](https://ktodzvoniv.com.ua/number/{clean_num})")
+                links.append(f"[💬 Проверить Viber](viber://chat?number={clean_num})")
+            
+            elif clean_num.startswith("375"):
+                country_info = "🇧🇾 Беларусь"
+                links.append(f"[🏢 Операторы Беларуси (A1/MTS/Life)](https://reytar.by/phone/{clean_num})")
+                links.append(f"[🔎 Поиск по объявлениям (BY)](https://www.google.com/search?q=site:kufar.by+%22{clean_num}%22)")
+            
+            # Вывод карточки
+            st.info(f"📍 Определена локация: **{country_info}**")
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown("#### 📱 Мессенджеры и связь")
+                for link in links[:4]: st.markdown(f"- {link}")
+            
+            with col2:
+                st.markdown("#### 🏢 Региональные базы")
+                for link in links[4:]: st.markdown(f"- {link}")
+
+            st.divider()
+            st.caption("Совет: Если номер не пробивается, попробуйте поискать его в формате с пробелами или тире через Google.")
 # --- МОДУЛЬ 4: NICKNAME ---
 # --- МОДУЛЬ 4: NICKNAME (EXTENDED v4.9) ---
 elif menu == "🌐 Nickname (Поиск по никнейму)":
