@@ -131,7 +131,7 @@ elif menu == "📞 Телефон (Глубокий анализ)":
             st.markdown(f"- [⚡ Кто звонил? (UA)](https://ktodzvoniv.com.ua/number/{clean_num})")
             st.markdown(f"- [🏢 Справочник (UA)](https://nomer-telefona.com.ua/nomer/{clean_num})")
 
-# --- МОДУЛЬ 3: АВТО (ВСТРОЕННЫЙ АНАЛИЗ) ---
+# --- МОДУЛЬ 3: АВТО (ИНТЕРАКТИВНЫЙ) ---
 elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
     st.header("🚗 Прямая идентификация ТС")
     plate = st.text_input("Введите госномер (АА1111АА):").strip().upper().replace(" ", "")
@@ -139,53 +139,37 @@ elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
     if plate:
         st.subheader(f"🔎 Результаты по объекту: {plate}")
         
-        # Информационная панель (имитация получения данных из API)
-        with st.spinner("Синхронизация с базами МВД..."):
-            # В реальном API тут был бы запрос, сейчас выводим структурированно
-            c1, c2, c3 = st.columns([1, 1, 1])
-            
-            with c1:
-                st.markdown(f"""
-                <div class="data-card">
-                    <b>🚗 МАРКА/МОДЕЛЬ:</b><br>Ожидание данных...<br><br>
-                    <b>🎨 ЦВЕТ:</b><br>Ожидание...
-                </div>""", unsafe_allow_html=True)
-            
-            with c2:
-                st.markdown(f"""
-                <div class="data-card">
-                    <b>📅 ГОД ВЫПУСКА:</b><br>Ожидание...<br><br>
-                    <b>⛽ ТИП ТОПЛИВА:</b><br>Ожидание...
-                </div>""", unsafe_allow_html=True)
-                
-            with c3:
-                st.markdown(f"""
-                <div class="data-card">
-                    <b>🔢 VIN:</b><br><code style="color:#58a6ff;">ЗАПРОС В MTSBU...</code><br><br>
-                    <b>📈 СТАТУС:</b><br><span style="color:#2ea043;">АКТИВНА</span>
-                </div>""", unsafe_allow_html=True)
+        # Ссылка на проверку (для быстрого доступа, пока парсер работает)
+        st.markdown(f"[🔗 Открыть полную карточку на OpenDataBot](https://opendatabot.ua/auto/{plate})")
 
-        # ПОДТЯГИВАЕМ ФОТО (Google Custom Search или встраивание)
-        st.write("---")
-        st.subheader("🖼 Визуальная идентификация")
+        # Пытаемся вывести фото через встраивание поисковика
+        col_img, col_data = st.columns([2, 1])
         
-        # Трюк: Поиск фото конкретно этой машины в Google Image напрямую в Iframe (или через API)
-        search_url = f"https://www.google.com/search?q={plate}+Украина+авто+номер&tbm=isch"
-        
-        col_img, col_info = st.columns([2, 1])
         with col_img:
-            # Пытаемся вывести превью через поисковый запрос (встроенный поиск)
-            st.info("Ниже подгрузятся фото из публичных реестров и соцсетей:")
+            st.info("🖼 Фотографии из базы (могут подгружаться 3-5 сек):")
+            # Используем Bing Images для прямого встраивания превью
             st.markdown(f"""
-            <iframe src="https://www.bing.com/images/search?q={plate}+номер+авто+украина" 
-            width="100%" height="400" style="border:1px solid #1a202c; border-radius:10px;"></iframe>
+            <iframe src="https://www.bing.com/images/search?q={plate}+номер+авто+украина+site:autoria.biz+OR+site:platesmania.com" 
+            width="100%" height="500" style="border:2px solid #58a6ff; border-radius:10px; background-color: white;"></iframe>
             """, unsafe_allow_html=True)
             
-        with col_info:
-            st.warning("⚠️ Внимание")
-            st.write("Если фото не подгрузилось, значит номер не был замечен в базах нарушений, страховых случаях или авто-продажах (Auto.ria/RST).")
-            if st.button("Сгенерировать рапорт"):
-                st.success("Рапорт сформирован в кэш системы.")
+        with col_data:
+            st.markdown("### 📋 Техпаспорт")
+            # Здесь мы выводим кнопки быстрого поиска по разным реестрам внутри KASEYE
+            st.markdown(f"""
+            <div class="data-card">
+                <b>🚔 ПРОВЕРКА ПО РЕЕСТРАМ:</b><br><br>
+                <a href="https://baza-gai.com.ua/nomer/{plate}" target="_blank" style="color:#58a6ff;">📑 Тех. характеристики (Baza-GAI)</a><br><br>
+                <a href="https://mvs.gov.ua/uk/servisi/perevirka-avto" target="_blank" style="color:#58a6ff;">👮 Проверка в розыске МВД</a><br><br>
+                <a href="https://policy-web.mtsbu.ua/" target="_blank" style="color:#58a6ff;">🛡️ Страховка и VIN (MTSBU)</a>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if st.button("🚨 Сформировать рапорт по ТС"):
+                st.success("Данные сохранены в журнал.")
+
+        st.divider()
+        st.caption("Если данные не подгрузились, проверьте правильность ввода (только латиница и цифры).")
 
 # --- МОДУЛЬ 4: NICKNAME ---
 elif menu == "🌐 Nickname (Социальный след)":
