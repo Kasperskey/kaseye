@@ -119,19 +119,20 @@ elif menu == "🌐 Nickname (Социальный след)":
 
 elif menu == "📧 Email (Утечки и профили)":
     st.header("📧 Оперативная разведка по Email")
-    email = st.text_input("Введите адрес (example@gmail.com):").strip()
-    if email:
-        st.subheader(f"📊 Объект: {email}")
-        u_nick = email.split('@')[0]
+    email_input = st.text_input("Введите адрес (example@gmail.com):").strip()
+    if email_input:
+        st.subheader(f"📊 Объект: {email_input}")
+        u_nick = email_input.split('@')[0]
         
-        c1, c2 = st.columns(2)
-        with c1:
+        # Исправленные имена колонок: c_left и c_right
+        c_left, c_right = st.columns(2)
+        
+        with c_left:
             st.markdown("### 🔍 Поиск аккаунтов (Live)")
-            # Самый надежный способ - поиск ника без жестких привязок
             st.markdown(f"""
             <div class="data-card">
                 <b>Global Search: {u_nick}</b><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+OR+%22{email}%22" target="_blank">ИСКАТЬ УПОМИНАНИЯ</a><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+OR+%22{email_input}%22" target="_blank">ИСКАТЬ УПОМИНАНИЯ</a><br>
                 <small>Найдем всё: от форумов до старых досок объявлений.</small>
             </div>
             <div class="data-card">
@@ -141,22 +142,22 @@ elif menu == "📧 Email (Утечки и профили)":
             </div>
             """, unsafe_allow_html=True)
             
-        with col_2:
+        with c_right:
             st.markdown("### 🚨 Базы утечек")
             st.markdown(f"""
             <div class="data-card" style="border-left: 4px solid #d73a49;">
                 <b>Have I Been Pwned</b><br>
-                <a class="card-link" href="https://haveibeenpwned.com/account/{email}" target="_blank">ГДЕ УТЕКЛА ПОЧТА</a>
+                <a class="card-link" href="https://haveibeenpwned.com/account/{email_input}" target="_blank">ГДЕ УТЕКЛА ПОЧТА</a>
             </div>
             <div class="data-card">
                 <b>Сканер утечек (Mirror)</b><br>
-                <a class="card-link" href="https://leakcheck.net/search?type=email&check={email}" target="_blank">ПРОВЕРИТЬ ПАРОЛИ</a>
+                <a class="card-link" href="https://leakcheck.net/search?type=email&check={email_input}" target="_blank">ПРОВЕРИТЬ ПАРОЛИ</a>
             </div>
             """, unsafe_allow_html=True)
             
         st.divider()
-        st.warning("⚔️ СОВЕТ ДЛЯ СЛУЖБЫ: Если поиск выдает 'ничего не найдено', значит цель не светила почту публично. Используй Telegram-боты (Глаз Бога и др.) — у них есть доступ к закрытым базам ГИБДД и банков, которых нет в Google.")
-
+        st.warning("⚔️ СОВЕТ: Если Google молчит, попробуй пробить никнейм в Telegram-ботах. Они видят то, что скрыто от поисковиков.")
+        
 elif menu == "👁 Visual ID (Лицо / AI)":
     st.header("👁 Идентификация личности по фото")
     st.info("Внешние индексы для поиска совпадений:")
