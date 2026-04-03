@@ -10,6 +10,7 @@ import urllib.parse
 import re
 import cv2
 import numpy as np
+import streamlit as st
 #import mediapipe as mp
 # --- КОНФИГУРАЦИЯ ПОДКЛЮЧЕНИЯ ---
 # Вставь сюда ссылку, которую выдаст ngrok
@@ -37,6 +38,15 @@ st.markdown("""
 
     h1, h2, h3 { color: #58a6ff; text-shadow: 0 0 10px rgba(88, 166, 255, 0.4); }
     .stTextInput>div>div>input { background-color: #0d1117; color: #ffffff; border: 1px solid #30363d; }
+
+# В боковой панели создаем выбор
+menu = st.sidebar.radio("Навигация", ["Главная", "SpiderFoot Разведка"])
+
+if menu == "SpiderFoot Разведка":
+    st.subheader("Интерфейс SpiderFoot")
+    st.components.v1.iframe(SF_URL, height=900, scrolling=True)
+else:
+    st.write("Добро пожаловать в KASEYE. Выберите модуль в меню.")
 
     .data-card {
         background-color: rgba(16, 20, 27, 0.9); border: 1px solid #1a202c;
