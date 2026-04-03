@@ -131,55 +131,40 @@ elif menu == "📞 Телефон (Глубокий анализ)":
             st.markdown(f"- [⚡ Кто звонил? (UA)](https://ktodzvoniv.com.ua/number/{clean_num})")
             st.markdown(f"- [🏢 Справочник (UA)](https://nomer-telefona.com.ua/nomer/{clean_num})")
 
-# --- МОДУЛЬ 3: АВТО (ULTIMATE OSINT) ---
+# --- МОДУЛЬ 3: АВТО (ТОЛЬКО ТЕХНИЧЕСКАЯ РАЗВЕДКА) ---
 elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
-    st.header("🚗 Оперативная идентификация ТС")
-    plate = st.text_input("Введите госномер (например BM9971AX):").strip().upper().replace(" ", "")
+    st.header("🚗 Идентификация транспортного средства")
+    plate = st.text_input("Введите госномер (например BM1976EO):").strip().upper().replace(" ", "")
     
     if plate:
-        st.subheader(f"🔎 Объект: {plate}")
+        st.subheader(f"🔎 Объект в работе: {plate}")
         
-        # Сетка быстрых действий
-        col1, col2 = st.columns(2)
+        # Оставляем только техпаспорт и владельцев
+        c1, c2 = st.columns(2)
         
-        with col1:
-            st.markdown("### 📋 Техпаспорт и Владелец")
+        with c1:
             st.markdown(f"""
             <div class="data-card">
                 <span class="card-icon">📑</span>
-                <a class="card-link" href="https://baza-gai.com.ua/nomer/{plate}" target="_blank">ДАННЫЕ ТЕХПАСПОРТА (Baza-GAI)</a><br>
-                <small>Марка, год, двигатель, дата регистрации</small>
-            </div>
-            <div class="data-card">
-                <span class="card-icon">👤</span>
-                <a class="card-link" href="https://opendatabot.ua/auto/{plate}" target="_blank">ИСТОРИЯ ВЛАДЕЛЬЦЕВ (OpenDataBot)</a><br>
-                <small>Юр. лица, количество владельцев, обременения</small>
-            </div>
-            <div class="data-card" style="border-left: 4px solid #ffcc00;">
-                <span class="card-icon">📱</span>
-                <a class="card-link" href="https://www.google.com/search?q={plate}+getcontact+OR+nomer.org" target="_blank">ПОИСК КОНТАКТОВ ВЛАДЕЛЬЦА</a><br>
-                <small>Связи через GetContact и Facebook</small>
+                <span class="card-title">ДАННЫЕ ТЕХПАСПОРТА</span>
+                <a class="card-link" href="https://baza-gai.com.ua/nomer/{plate}" target="_blank">СМОТРЕТЬ (Baza-GAI)</a>
+                <br><small>Марка, год выпуска, объем двигателя, дата регистрации</small>
             </div>
             """, unsafe_allow_html=True)
 
-        with col2:
-            st.markdown("### 🖼 Визуальный след")
+        with c2:
             st.markdown(f"""
-            <div class="data-card" style="border-left: 4px solid #d73a49; height: 100px; display: flex; align-items: center;">
-                <span class="card-icon">📸</span>
-                <a class="card-link" href="https://platesmania.com/ua/search?nomer={plate}" target="_blank" style="font-size: 1.2em;">ОТКРЫТЬ ФОТО В PLATESMANIA</a>
-            </div>
-            <div class="data-card" style="border-left: 4px solid #58a6ff; height: 100px; display: flex; align-items: center;">
-                <span class="card-icon">🔍</span>
-                <a class="card-link" href="https://www.google.com/search?q={plate}+номер+авто+украина&tbm=isch" target="_blank" style="font-size: 1.2em;">ПОИСК ФОТО В GOOGLE IMAGES</a>
+            <div class="data-card">
+                <span class="card-icon">👤</span>
+                <span class="card-title">ИСТОРИЯ РЕГИСТРАЦИЙ</span>
+                <a class="card-link" href="https://opendatabot.ua/auto/{plate}" target="_blank">ПРОВЕРИТЬ (OpenDataBot)</a>
+                <br><small>История смены владельцев и юридические данные</small>
             </div>
             """, unsafe_allow_html=True)
             
-            st.info("💡 Совет: PlatesMania — лучший ресурс. Если фото нет там, ищите в Google Images по запросу 'номер + ДТП' или 'номер + продажа'.")
-
         st.divider()
-        if st.button("🚨 Сформировать итоговый рапорт"):
-            st.success(f"Объект {plate} добавлен в оперативный журнал разведки.")
+        if st.button("🚨 СФОРМИРОВАТЬ ИТОГОВЫЙ РАПОРТ"):
+            st.success(f"Данные по объекту {plate} зафиксированы.")
 # --- МОДУЛЬ 4: NICKNAME ---
 elif menu == "🌐 Nickname (Социальный след)":
     st.header("🌐 Глобальный поиск по Nickname")
