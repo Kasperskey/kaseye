@@ -150,10 +150,30 @@ elif menu == "📧 Email (Утечки и профили)":
             st.markdown(f"""<div class="data-card" style="border-left: 4px solid #d73a49;"><b>Leaks Check:</b><br><a class="card-link" href="https://haveibeenpwned.com/account/{email_input}" target="_blank">УТЕЧКИ (HIBP)</a></div>""", unsafe_allow_html=True)
 
 # 6. VISUAL ID
+# 6. VISUAL ID (ULTIMATE FACE SEARCH)
 elif menu == "👁 Visual ID (Лицо / AI)":
-    st.header("👁 Идентификация личности по фото")
-    st.markdown(f"""<div class="data-card"><b>FaceCheck.ID:</b><br><a class="card-link" href="https://facecheck.id/" target="_blank">ГЛОБАЛЬНЫЙ ПОИСК ПО ЛИЦУ</a></div>""", unsafe_allow_html=True)
-    st.markdown(f"""<div class="data-card"><b>PimEyes:</b><br><a class="card-link" href="https://pimeyes.com/" target="_blank">ИНДЕКСАЦИЯ ЛИЦ В СЕТИ</a></div>""", unsafe_allow_html=True)
+    st.header("👁 Идентификация по лицу")
+    st.write("Если номер и почта молчат, лицо — единственный шанс.")
+    
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown(f"""
+        <div class="data-card" style="border-left: 4px solid #00ff00;">
+            <b>FaceCheck.ID (Рекомендую)</b><br>
+            <a class="card-link" href="https://facecheck.id/" target="_blank">ИСКАТЬ ПО ВСЕМ СОЦСЕТЯМ</a><br>
+            <small>Находит профили в ВК, FB, Инсте и даже статьи в новостях по фото.</small>
+        </div>
+        """, unsafe_allow_html=True)
+    with c2:
+        st.markdown(f"""
+        <div class="data-card">
+            <b>PimEyes (Deep Search)</b><br>
+            <a class="card-link" href="https://pimeyes.com/" target="_blank">ПОИСК ПО ВСЕМУ ИНТЕРНЕТУ</a><br>
+            <small>Очень мощный, но часто требует подписку для просмотра ссылок.</small>
+        </div>
+        """, unsafe_allow_html=True)
+        
+    st.info("💡 OSINT-СОВЕТ: Сделай скриншот аватарки из WhatsApp или Telegram и загрузи его в FaceCheck. В 90% случаев он найдет его старый ВК или Фейсбук.")
 
 # 7. EXIF
 elif menu == "📸 EXIF Анализ":
