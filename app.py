@@ -29,7 +29,6 @@ st.markdown("""
         border-radius: 8px; padding: 15px; margin-bottom: 10px; transition: 0.3s;
         border-left: 4px solid #58a6ff;
     }
-    .card-icon { color: #58a6ff; font-size: 1.5em; margin-right: 12px; float: left; }
     .card-title { color: white; font-weight: bold; font-size: 1.1em; display: block; }
     .card-link { color: #58a6ff !important; text-decoration: none; font-size: 1em; font-weight: bold; }
     .card-link:hover { text-shadow: 0 0 10px #58a6ff; }
@@ -83,13 +82,9 @@ elif menu == "📞 Телефон (Глубокий анализ)":
         st.subheader(f"📊 Объект: +{num}")
         c_left, c_right = st.columns(2)
         with c_left:
-            st.markdown(f"""
-            <div class="data-card"><b>Telegram Profile:</b><br><a class="card-link" href="https://t.me/+{num}" target="_blank">ОТКРЫТЬ ЧАТ</a></div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div class="data-card"><b>Telegram Profile:</b><br><a class="card-link" href="https://t.me/+{num}" target="_blank">ОТКРЫТЬ ЧАТ</a></div>""", unsafe_allow_html=True)
         with c_right:
-            st.markdown(f"""
-            <div class="data-card" style="border-left: 4px solid #d73a49;"><b>LeakCheck (Связки):</b><br><a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">НАЙТИ ПРИВЯЗАННУЮ ПОЧТУ</a></div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div class="data-card" style="border-left: 4px solid #d73a49;"><b>LeakCheck (Связки):</b><br><a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">НАЙТИ ПРИВЯЗАННУЮ ПОЧТУ</a></div>""", unsafe_allow_html=True)
 
 # 3. АВТО
 elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
@@ -99,13 +94,9 @@ elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
         st.subheader(f"🔎 Объект: {plate}")
         c_left, c_right = st.columns(2)
         with c_left:
-            st.markdown(f"""
-            <div class="data-card"><b>Характеристики (МВД):</b><br><a class="card-link" href="https://baza-gai.com.ua/nomer/{plate}" target="_blank">ТЕХПАСПОРТ (Baza-GAI)</a></div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div class="data-card"><b>Характеристики (МВД):</b><br><a class="card-link" href="https://baza-gai.com.ua/nomer/{plate}" target="_blank">ТЕХПАСПОРТ (Baza-GAI)</a></div>""", unsafe_allow_html=True)
         with c_right:
-            st.markdown(f"""
-            <div class="data-card" style="border-left: 4px solid #ffcc00;"><b>История и Аресты:</b><br><a class="card-link" href="https://opendatabot.ua/auto/{plate}" target="_blank">ПРОВЕРИТЬ (OpenDataBot)</a></div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div class="data-card" style="border-left: 4px solid #ffcc00;"><b>История и Аресты:</b><br><a class="card-link" href="https://opendatabot.ua/auto/{plate}" target="_blank">ПРОВЕРИТЬ (OpenDataBot)</a></div>""", unsafe_allow_html=True)
 
 # 4. НИКНЕЙМ
 elif menu == "🌐 Nickname (Социальный след)":
@@ -113,10 +104,8 @@ elif menu == "🌐 Nickname (Социальный след)":
     nick = st.text_input("Введите никнейм (без @):").strip()
     if nick:
         st.subheader(f"🔍 Анализ ника: {nick}")
-        st.markdown(f"""
-        <div class="data-card"><b>Google Global Search:</b><br><a class="card-link" href="https://www.google.com/search?q=%22{nick}%22" target="_blank">НАЙТИ УПОМИНАНИЯ В СЕТИ</a></div>
-        <div class="data-card"><b>Social Networks:</b><br><a class="card-link" href="https://www.google.com/search?q=site:instagram.com+OR+site:facebook.com+OR+site:tiktok.com+%22{nick}%22" target="_blank">ПРОВЕРИТЬ ПРОФИЛИ</a></div>
-        """, unsafe_allow_html=True)
+        st.markdown(f"""<div class="data-card"><b>Google Global Search:</b><br><a class="card-link" href="https://www.google.com/search?q=%22{nick}%22" target="_blank">НАЙТИ УПОМИНАНИЯ В СЕТИ</a></div>""", unsafe_allow_html=True)
+        st.markdown(f"""<div class="data-card"><b>Social Networks:</b><br><a class="card-link" href="https://www.google.com/search?q=site:instagram.com+OR+site:facebook.com+OR+site:tiktok.com+%22{nick}%22" target="_blank">ПРОВЕРИТЬ ПРОФИЛИ</a></div>""", unsafe_allow_html=True)
 
 # 5. EMAIL + DARKNET
 elif menu == "📧 Email (Утечки и профили)":
@@ -127,18 +116,24 @@ elif menu == "📧 Email (Утечки и профили)":
         u_nick = email_input.split('@')[0]
         c_left, c_right = st.columns(2)
         with c_left:
-            st.markdown(f"""
-            <div class="data-card"><b>Поиск ника ({u_nick}):</b><br><a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+OR+%22{email_input}%22" target="_blank">ИСКАТЬ УПОМИНАНИЯ</a></div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div class="data-card"><b>Поиск ника ({u_nick}):</b><br><a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+OR+%22{email_input}%22" target="_blank">ИСКАТЬ УПОМИНАНИЯ</a></div>""", unsafe_allow_html=True)
         with c_right:
-            st.markdown(f"""
-            <div class="data-card" style="border-left: 4px solid #7928ca; box-shadow: 0 0 15px rgba(121, 40, 202, 0.2);"><b>Darknet & Leaks Index:</b><br><a class="card-link" href="https://intelx.io/?s={email_input}" target="_blank">ПОИСК В ДАРКНЕТЕ (IntelX)</a></div>
-            <div class="data-card" style="border-left: 4px solid #d73a49;"><b>Have I Been Pwned:</b><br><a class="card-link" href="https://haveibeenpwned.com/account/{email_input}" target="_blank">ГДЕ УТЕКЛА ПОЧТА</a></div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"""<div class="data-card" style="border-left: 4px solid #7928ca;"><b>Darknet Index:</b><br><a class="card-link" href="https://intelx.io/?s={email_input}" target="_blank">ПОИСК (IntelX)</a></div>""", unsafe_allow_html=True)
+            st.markdown(f"""<div class="data-card" style="border-left: 4px solid #d73a49;"><b>Leaks Check:</b><br><a class="card-link" href="https://haveibeenpwned.com/account/{email_input}" target="_blank">УТЕЧКИ (HIBP)</a></div>""", unsafe_allow_html=True)
 
 # 6. VISUAL ID
 elif menu == "👁 Visual ID (Лицо / AI)":
     st.header("👁 Идентификация личности по фото")
-    st.markdown(f"""
-    <div class="data-card"><b>FaceCheck.ID:</b><br><a class="card-link" href="https://facecheck.id/" target="_blank">ГЛОБАЛЬНЫЙ ПОИСК ПО ЛИЦУ</a></div>
-    <div class="data-card"><b>PimEyes:</b><br><a class="card-link" href="https://pimeyes.com/" target="_blank">ИН
+    st.markdown(f"""<div class="data-card"><b>FaceCheck.ID:</b><br><a class="card-link" href="https://facecheck.id/" target="_blank">ГЛОБАЛЬНЫЙ ПОИСК ПО ЛИЦУ</a></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class="data-card"><b>PimEyes:</b><br><a class="card-link" href="https://pimeyes.com/" target="_blank">ИНДЕКСАЦИЯ ЛИЦ В СЕТИ</a></div>""", unsafe_allow_html=True)
+
+# 7. EXIF
+elif menu == "📸 EXIF Анализ":
+    st.header("📸 Извлечение метаданных")
+    f = st.file_uploader("Загрузите файл (JPG):", type=['jpg', 'jpeg'])
+    if f:
+        img = Image.open(io.BytesIO(f.read()))
+        st.image(img, width=400)
+        exif = img._getexif()
+        if exif: st.success("Метаданные найдены.")
+        else: st.warning("Метаданные отсутствуют.")
