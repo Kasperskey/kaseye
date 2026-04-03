@@ -73,43 +73,47 @@ if menu == "👤 Розыск (Поиск по ФИО)":
         <div class="data-card"><a class="card-link" href="https://clarity-project.info/search?q={safe_fn}" target="_blank">🔍 CLARITY PROJECT (Бизнес и связи)</a></div>
         """, unsafe_allow_html=True)
 
-# 2. ТЕЛЕФОН
-# 2. ТЕЛЕФОН (ОТЛАЖЕННЫЙ OSINT)
+# 2. ТЕЛЕФОН (ULTIMATE GOOGLE DORKS)
 elif menu == "📞 Телефон (Глубокий анализ)":
     st.header("📞 Глобальный анализ номера")
     phone = st.text_input("Введите номер (380...):").strip()
     if phone:
+        # Чистый номер без знаков
         num = "".join(filter(str.isdigit, phone))
-        st.subheader(f"📊 Объект: +{num}")
+        # Короткий номер без кода страны (например, 0505653901)
+        short_num = num[-10:] if len(num) >= 10 else num
         
-        # Формируем варианты написания для поиска (через пробелы, тире и т.д.)
-        # Например: 050 565 39 01
-        formatted_num = f"{num[-10:-7]} {num[-7:-4]} {num[-4:-2]} {num[-2:]}"
+        st.subheader(f"📊 Объект: +{num}")
         
         c1, c2 = st.columns(2)
         
         with c1:
             st.markdown(f"""
             <div class="data-card"><b>📱 МЕССЕНДЖЕРЫ</b><br>
-                <a class="card-link" href="https://t.me/+{num}" target="_blank">✅ TELEGRAM (Прямой профиль)</a><br>
-                <a class="card-link" href="https://wa.me/{num}" target="_blank">✅ WHATSAPP (Проверка аккаунта)</a><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22+OR+%22{formatted_num}%22" target="_blank">🔎 ГЛОБАЛЬНЫЙ ПОИСК В GOOGLE</a>
+                <a class="card-link" href="https://t.me/+{num}" target="_blank">✅ TELEGRAM</a><br>
+                <a class="card-link" href="https://wa.me/{num}" target="_blank">✅ WHATSAPP</a>
+            </div>
+            <div class="data-card" style="border-left: 4px solid #58a6ff;"><b>🔎 ГЛОБАЛЬНЫЙ ПРОБИВ</b><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{short_num}%22+OR+%22{num}%22" target="_blank">ПОИСК ПО ВСЕМУ ИНТЕРНЕТУ</a><br>
+                <small>Ищет номер во всех форматах (объявления, форумы, статьи).</small>
             </div>
             """, unsafe_allow_html=True)
             
         with c2:
+            # Умный дорк для соцсетей: ищем короткий номер на конкретных сайтах
+            social_query = f"(site:facebook.com OR site:vk.com OR site:ok.ru OR site:instagram.com) %22{short_num}%22"
             st.markdown(f"""
-            <div class="data-card" style="border-left: 4px solid #7928ca;"><b>🌐 СОЦСЕТИ (Универсальный поиск)</b><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22+site:facebook.com+OR+site:vk.com+OR+site:ok.ru" target="_blank">👤 ПОИСК ПРОФИЛЯ В FB/VK/OK</a><br>
-                <small>Ищем номер в индексах соцсетей через Google.</small>
+            <div class="data-card" style="border-left: 4px solid #7928ca;"><b>👤 СОЦСЕТИ (Обход защиты)</b><br>
+                <a class="card-link" href="https://www.google.com/search?q={social_query}" target="_blank">ИСКАТЬ В FB/VK/OK/IG</a><br>
+                <small>Используем короткий формат номера для обхода фильтров.</small>
             </div>
             <div class="data-card" style="border-left: 4px solid #d73a49;"><b>🚨 БАЗЫ УТЕЧЕК</b><br>
-                <a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">🔑 LEAKCHECK (Поиск связки с Email)</a>
+                <a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">LEAKCHECK (Почта и Пароли)</a>
             </div>
             """, unsafe_allow_html=True)
 
         st.divider()
-        st.warning("⚠️ Внимание: ВК и ОК блокируют внутренний поиск без входа. Ссылка выше — это обход через Google. Если он ничего не нашел, значит номер не был указан в открытом доступе.")
+        st.info("💡 Если Google выдает 'ничего не найдено', значит этот номер никогда не публиковался открыто. В таком случае поможет только GetContact (в телефоне) или платные OSINT-боты.")
 # 3. АВТО
 elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
     st.header("🚗 Идентификация транспортного средства")
