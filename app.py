@@ -131,48 +131,55 @@ elif menu == "📞 Телефон (Глубокий анализ)":
             st.markdown(f"- [⚡ Кто звонил? (UA)](https://ktodzvoniv.com.ua/number/{clean_num})")
             st.markdown(f"- [🏢 Справочник (UA)](https://nomer-telefona.com.ua/nomer/{clean_num})")
 
-# --- МОДУЛЬ 3: АВТО (ОТЛАЖЕННЫЙ) ---
+# --- МОДУЛЬ 3: АВТО (ULTIMATE OSINT) ---
 elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
-    st.header("🚗 Глубокая идентификация ТС")
-    plate = st.text_input("Введите госномер (латиницей, например BM9971AX):").strip().upper().replace(" ", "")
+    st.header("🚗 Оперативная идентификация ТС")
+    plate = st.text_input("Введите госномер (например BM9971AX):").strip().upper().replace(" ", "")
     
     if plate:
-        st.subheader(f"🔎 Объект в разработке: {plate}")
+        st.subheader(f"🔎 Объект: {plate}")
         
-        # Информационные карточки
-        st.markdown(f"""
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        # Сетка быстрых действий
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown("### 📋 Техпаспорт и Владелец")
+            st.markdown(f"""
             <div class="data-card">
-                <span class="card-icon">📁</span>
-                <span class="card-title">ТЕХПАСПОРТ (Обход 404)</span>
-                <a class="card-link" href="https://baza-gai.com.ua/nomer/{plate}" target="_blank">СМОТРЕТЬ ХАРАКТЕРИСТИКИ</a>
+                <span class="card-icon">📑</span>
+                <a class="card-link" href="https://baza-gai.com.ua/nomer/{plate}" target="_blank">ДАННЫЕ ТЕХПАСПОРТА (Baza-GAI)</a><br>
+                <small>Марка, год, двигатель, дата регистрации</small>
             </div>
             <div class="data-card">
-                <span class="card-icon">📜</span>
-                <span class="card-title">ИСТОРИЯ РЕГИСТРАЦИЙ</span>
-                <a class="card-link" href="https://opendatabot.ua/auto/{plate}" target="_blank">ПРОВЕРИТЬ ВЛАДЕЛЬЦЕВ</a>
+                <span class="card-icon">👤</span>
+                <a class="card-link" href="https://opendatabot.ua/auto/{plate}" target="_blank">ИСТОРИЯ ВЛАДЕЛЬЦЕВ (OpenDataBot)</a><br>
+                <small>Юр. лица, количество владельцев, обременения</small>
             </div>
             <div class="data-card" style="border-left: 4px solid #ffcc00;">
                 <span class="card-icon">📱</span>
-                <span class="card-title">СВЯЗЬ С ВЛАДЕЛЬЦЕМ (GetContact)</span>
-                <a class="card-link" href="https://www.google.com/search?q={plate}+getcontact+site:facebook.com+OR+site:instagram.com" target="_blank">ИСКАТЬ КОНТАКТЫ</a>
+                <a class="card-link" href="https://www.google.com/search?q={plate}+getcontact+OR+nomer.org" target="_blank">ПОИСК КОНТАКТОВ ВЛАДЕЛЬЦА</a><br>
+                <small>Связи через GetContact и Facebook</small>
             </div>
-        </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)
+
+        with col2:
+            st.markdown("### 🖼 Визуальный след")
+            st.markdown(f"""
+            <div class="data-card" style="border-left: 4px solid #d73a49; height: 100px; display: flex; align-items: center;">
+                <span class="card-icon">📸</span>
+                <a class="card-link" href="https://platesmania.com/ua/search?nomer={plate}" target="_blank" style="font-size: 1.2em;">ОТКРЫТЬ ФОТО В PLATESMANIA</a>
+            </div>
+            <div class="data-card" style="border-left: 4px solid #58a6ff; height: 100px; display: flex; align-items: center;">
+                <span class="card-icon">🔍</span>
+                <a class="card-link" href="https://www.google.com/search?q={plate}+номер+авто+украина&tbm=isch" target="_blank" style="font-size: 1.2em;">ПОИСК ФОТО В GOOGLE IMAGES</a>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.info("💡 Совет: PlatesMania — лучший ресурс. Если фото нет там, ищите в Google Images по запросу 'номер + ДТП' или 'номер + продажа'.")
 
         st.divider()
-        st.subheader("🖼 Фото-фиксация (PlatesMania / DuckDuckGo)")
-        
-        # Прямая ссылка для надежности
-        st.markdown(f"👉 [Открыть фото в базе PlatesMania](https://platesmania.com/ua/search?nomer={plate})")
-        
-        # Попытка встроить DuckDuckGo (он реже блокирует)
-        st.markdown(f"""
-        <iframe src="https://duckduckgo.com/?q={plate}+номер+авто+украина+platesmania&iax=images&ia=images" 
-        width="100%" height="550" style="border:2px solid #d73a49; border-radius:12px; background-color: white;"></iframe>
-        """, unsafe_allow_html=True)
-        
-        st.divider()
+        if st.button("🚨 Сформировать итоговый рапорт"):
+            st.success(f"Объект {plate} добавлен в оперативный журнал разведки.")
 # --- МОДУЛЬ 4: NICKNAME ---
 elif menu == "🌐 Nickname (Социальный след)":
     st.header("🌐 Глобальный поиск по Nickname")
