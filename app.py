@@ -74,7 +74,7 @@ if menu == "👤 Розыск (Поиск по ФИО)":
         """, unsafe_allow_html=True)
 
 # 2. ТЕЛЕФОН
-# 2. ТЕЛЕФОН (TOTAL OSINT)
+# 2. ТЕЛЕФОН (ОТЛАЖЕННЫЙ OSINT)
 elif menu == "📞 Телефон (Глубокий анализ)":
     st.header("📞 Глобальный анализ номера")
     phone = st.text_input("Введите номер (380...):").strip()
@@ -82,37 +82,34 @@ elif menu == "📞 Телефон (Глубокий анализ)":
         num = "".join(filter(str.isdigit, phone))
         st.subheader(f"📊 Объект: +{num}")
         
-        c1, c2, c3 = st.columns(3)
+        # Формируем варианты написания для поиска (через пробелы, тире и т.д.)
+        # Например: 050 565 39 01
+        formatted_num = f"{num[-10:-7]} {num[-7:-4]} {num[-4:-2]} {num[-2:]}"
+        
+        c1, c2 = st.columns(2)
         
         with c1:
             st.markdown(f"""
-            <div class="data-card"><b>📱 MESSENGERS</b><br>
-                <a class="card-link" href="https://t.me/+{num}" target="_blank">TELEGRAM</a><br>
-                <a class="card-link" href="viber://chat?number={num}" target="_blank">VIBER</a><br>
-                <a class="card-link" href="https://wa.me/{num}" target="_blank">WHATSAPP</a>
+            <div class="data-card"><b>📱 МЕССЕНДЖЕРЫ</b><br>
+                <a class="card-link" href="https://t.me/+{num}" target="_blank">✅ TELEGRAM (Прямой профиль)</a><br>
+                <a class="card-link" href="https://wa.me/{num}" target="_blank">✅ WHATSAPP (Проверка аккаунта)</a><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22+OR+%22{formatted_num}%22" target="_blank">🔎 ГЛОБАЛЬНЫЙ ПОИСК В GOOGLE</a>
             </div>
             """, unsafe_allow_html=True)
             
         with c2:
             st.markdown(f"""
-            <div class="data-card"><b>🌐 SOCIAL NETS</b><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22+site:vk.com" target="_blank">ВКОНТАКТЕ</a><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22+site:ok.ru" target="_blank">ОДНОКЛАССНИКИ</a><br>
-                <a class="card-link" href="https://www.facebook.com/search/top/?q={num}" target="_blank">FACEBOOK</a>
+            <div class="data-card" style="border-left: 4px solid #7928ca;"><b>🌐 СОЦСЕТИ (Универсальный поиск)</b><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22+site:facebook.com+OR+site:vk.com+OR+site:ok.ru" target="_blank">👤 ПОИСК ПРОФИЛЯ В FB/VK/OK</a><br>
+                <small>Ищем номер в индексах соцсетей через Google.</small>
             </div>
-            """, unsafe_allow_html=True)
-            
-        with c3:
-            st.markdown(f"""
-            <div class="data-card" style="border-left: 4px solid #d73a49;"><b>🚨 LEAKS & DARK</b><br>
-                <a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">LEAKCHECK (Связки)</a><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22+site:instagram.com" target="_blank">INSTAGRAM</a><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22" target="_blank">GLOBAL GOOGLE</a>
+            <div class="data-card" style="border-left: 4px solid #d73a49;"><b>🚨 БАЗЫ УТЕЧЕК</b><br>
+                <a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">🔑 LEAKCHECK (Поиск связки с Email)</a>
             </div>
             """, unsafe_allow_html=True)
 
         st.divider()
-        st.info("💡 СОВЕТ: Viber откроется только если у тебя установлено приложение на ПК/Телефоне.")
+        st.warning("⚠️ Внимание: ВК и ОК блокируют внутренний поиск без входа. Ссылка выше — это обход через Google. Если он ничего не нашел, значит номер не был указан в открытом доступе.")
 # 3. АВТО
 elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
     st.header("🚗 Идентификация транспортного средства")
