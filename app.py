@@ -1,10 +1,7 @@
 import streamlit as st
 import pandas as pd
 import requests
-import folium
 from PIL import Image
-from PIL.ExifTags import TAGS
-from streamlit_folium import st_folium
 import io
 import urllib.parse
 
@@ -33,22 +30,15 @@ st.markdown("""
         border-left: 4px solid #58a6ff;
     }
     .card-icon { color: #58a6ff; font-size: 1.5em; margin-right: 12px; float: left; }
-    .card-title { color: white; font-weight: bold; font-size: 1em; display: block; }
-    .card-link { color: #58a6ff !important; text-decoration: none; font-size: 0.9em; font-weight: bold; }
+    .card-title { color: white; font-weight: bold; font-size: 1.1em; display: block; }
+    .card-link { color: #58a6ff !important; text-decoration: none; font-size: 1em; font-weight: bold; }
     .card-link:hover { text-shadow: 0 0 10px #58a6ff; }
     .online-indicator { color: #2ea043; font-weight: bold; animation: pulse 2.5s infinite; text-align: center; font-size: 0.8em; }
     @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
     </style>
     """, unsafe_allow_html=True)
 
-# --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
-def get_decimal_from_dms(dms, ref):
-    try:
-        degrees = float(dms[0]); minutes = float(dms[1]) / 60.0; seconds = float(dms[2]) / 3600.0
-        return -(degrees + minutes + seconds) if ref in ['S', 'W'] else degrees + minutes + seconds
-    except: return None
-
-# --- SIDEBAR (БЕЗ СТИКЕРА) ---
+# --- SIDEBAR ---
 with st.sidebar:
     st.markdown("<div class='sidebar-title'>KASEYE</div>", unsafe_allow_html=True)
     st.markdown("<p class='online-indicator'>● СИСТЕМА: OPERATIONAL</p>", unsafe_allow_html=True)
@@ -68,6 +58,7 @@ with st.sidebar:
 
 # --- ЛОГИКА ОТОБРАЖЕНИЯ ---
 
+# 1. ФИО
 if menu == "👤 Розыск (Поиск по ФИО)":
     st.header("👤 Глубокий розыск личности (UA)")
     c1, c2, c3 = st.columns(3)
@@ -78,90 +69,76 @@ if menu == "👤 Розыск (Поиск по ФИО)":
         fn = f"{lname} {fname} {mname}".strip()
         safe_fn = urllib.parse.quote(fn)
         st.subheader(f"📊 Досье: {fn}")
-        t1, t2 = st.tabs(["🏛 Реестры", "💼 Бизнес"])
-        with t1:
-            st.markdown(f"""<div class="data-card"><span class="card-icon">⚖️</span><a class="card-link" href="https://court.gov.ua/fair/" target="_blank">СУДОВА ВЛАДА (Поиск дел)</a></div>""", unsafe_allow_html=True)
-            st.markdown(f"""<div class="data-card"><span class="card-icon">📦</span><a class="card-link" href="https://prozorro.gov.ua/tender/search/?text={safe_fn}" target="_blank">PROZORRO (Тендеры)</a></div>""", unsafe_allow_html=True)
-        with t2:
-            st.markdown(f"""<div class="data-card"><span class="card-icon">🔍</span><a class="card-link" href="https://clarity-project.info/search?q={safe_fn}" target="_blank">CLARITY PROJECT (Декларации)</a></div>""", unsafe_allow_html=True)
+        st.markdown(f"""
+        <div class="data-card"><a class="card-link" href="https://court.gov.ua/fair/" target="_blank">🏛 СУДОВА ВЛАДА (Поиск дел)</a></div>
+        <div class="data-card"><a class="card-link" href="https://clarity-project.info/search?q={safe_fn}" target="_blank">🔍 CLARITY PROJECT (Бизнес и связи)</a></div>
+        """, unsafe_allow_html=True)
 
+# 2. ТЕЛЕФОН
 elif menu == "📞 Телефон (Глубокий анализ)":
-    st.header("📞 Поиск по номеру телефона")
-    phone = st.text_input("Введите номер (380...):")
+    st.header("📞 Глобальный анализ номера")
+    phone = st.text_input("Введите номер (380...):").strip()
     if phone:
         num = "".join(filter(str.isdigit, phone))
-        st.markdown(f"""<div class="data-card"><b>Telegram:</b> <a class="card-link" href="https://t.me/+{num}" target="_blank">ОТКРЫТЬ ПРОФИЛЬ</a></div>""", unsafe_allow_html=True)
-        st.markdown(f"""<div class="data-card"><b>База отзывов:</b> <a class="card-link" href="https://ktodzvoniv.com.ua/number/{num}" target="_blank">КТО ЗВОНИЛ (UA)</a></div>""", unsafe_allow_html=True)
+        st.subheader(f"📊 Объект: +{num}")
+        c_left, c_right = st.columns(2)
+        with c_left:
+            st.markdown(f"""
+            <div class="data-card"><b>Telegram Profile:</b><br><a class="card-link" href="https://t.me/+{num}" target="_blank">ОТКРЫТЬ ЧАТ</a></div>
+            """, unsafe_allow_html=True)
+        with c_right:
+            st.markdown(f"""
+            <div class="data-card" style="border-left: 4px solid #d73a49;"><b>LeakCheck (Связки):</b><br><a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">НАЙТИ ПРИВЯЗАННУЮ ПОЧТУ</a></div>
+            """, unsafe_allow_html=True)
 
+# 3. АВТО
 elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
     st.header("🚗 Идентификация транспортного средства")
-    plate = st.text_input("Введите госномер (BM9971AX):").strip().upper().replace(" ", "")
+    plate = st.text_input("Введите госномер (например BM1976EO):").strip().upper().replace(" ", "")
     if plate:
         st.subheader(f"🔎 Объект: {plate}")
-        c1, c2 = st.columns(2)
-        with c1:
-            st.markdown(f"""<div class="data-card">📑 <b>ТЕХПАСПОРТ</b><br><a class="card-link" href="https://baza-gai.com.ua/nomer/{plate}" target="_blank">ХАРАКТЕРИСТИКИ (Baza-GAI)</a></div>""", unsafe_allow_html=True)
-        with c2:
-            st.markdown(f"""<div class="data-card">👤 <b>ВЛАДЕЛЬЦЫ</b><br><a class="card-link" href="https://opendatabot.ua/auto/{plate}" target="_blank">ИСТОРИЯ (OpenDataBot)</a></div>""", unsafe_allow_html=True)
+        c_left, c_right = st.columns(2)
+        with c_left:
+            st.markdown(f"""
+            <div class="data-card"><b>Характеристики (МВД):</b><br><a class="card-link" href="https://baza-gai.com.ua/nomer/{plate}" target="_blank">ТЕХПАСПОРТ (Baza-GAI)</a></div>
+            """, unsafe_allow_html=True)
+        with c_right:
+            st.markdown(f"""
+            <div class="data-card" style="border-left: 4px solid #ffcc00;"><b>История и Аресты:</b><br><a class="card-link" href="https://opendatabot.ua/auto/{plate}" target="_blank">ПРОВЕРИТЬ (OpenDataBot)</a></div>
+            """, unsafe_allow_html=True)
 
+# 4. НИКНЕЙМ
 elif menu == "🌐 Nickname (Социальный след)":
     st.header("🌐 Поиск по Nickname")
     nick = st.text_input("Введите никнейм (без @):").strip()
     if nick:
-        st.subheader(f"🔍 След ника: {nick}")
+        st.subheader(f"🔍 Анализ ника: {nick}")
         st.markdown(f"""
-        <div class="data-card"><b>Instagram:</b> <a class="card-link" href="https://instagram.com/{nick}" target="_blank">ОТКРЫТЬ</a></div>
-        <div class="data-card"><b>TikTok:</b> <a class="card-link" href="https://www.tiktok.com/@{nick}" target="_blank">ОТКРЫТЬ</a></div>
-        <div class="data-card"><b>GitHub:</b> <a class="card-link" href="https://github.com/{nick}" target="_blank">ОТКРЫТЬ</a></div>
-        <div class="data-card"><b>Steam:</b> <a class="card-link" href="https://steamcommunity.com/id/{nick}" target="_blank">ОТКРЫТЬ</a></div>
+        <div class="data-card"><b>Google Global Search:</b><br><a class="card-link" href="https://www.google.com/search?q=%22{nick}%22" target="_blank">НАЙТИ УПОМИНАНИЯ В СЕТИ</a></div>
+        <div class="data-card"><b>Social Networks:</b><br><a class="card-link" href="https://www.google.com/search?q=site:instagram.com+OR+site:facebook.com+OR+site:tiktok.com+%22{nick}%22" target="_blank">ПРОВЕРИТЬ ПРОФИЛИ</a></div>
         """, unsafe_allow_html=True)
 
-
+# 5. EMAIL + DARKNET
 elif menu == "📧 Email (Утечки и профили)":
-    st.header("📧 Оперативная разведка по Email")
+    st.header("📧 Глубокая разведка по Email")
     email_input = st.text_input("Введите адрес (example@gmail.com):").strip()
     if email_input:
         st.subheader(f"📊 Объект: {email_input}")
         u_nick = email_input.split('@')[0]
-        
         c_left, c_right = st.columns(2)
-        
         with c_left:
             st.markdown(f"""
-            <div class="data-card">
-                <b>Global Search: {u_nick}</b><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+OR+%22{email_input}%22" target="_blank">ИСКАТЬ УПОМИНАНИЯ</a><br>
-                <small>Найдем всё: от форумов до старых досок объявлений.</small>
-            </div>
+            <div class="data-card"><b>Поиск ника ({u_nick}):</b><br><a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+OR+%22{email_input}%22" target="_blank">ИСКАТЬ УПОМИНАНИЯ</a></div>
             """, unsafe_allow_html=True)
-            
         with c_right:
             st.markdown(f"""
-            <div class="data-card" style="border-left: 4px solid #d73a49;">
-                <b>Have I Been Pwned</b><br>
-                <a class="card-link" href="https://haveibeenpwned.com/account/{email_input}" target="_blank">ГДЕ УТЕКЛА ПОЧТА</a><br>
-                <small>Список баз, в которых засветился этот адрес.</small>
-            </div>
+            <div class="data-card" style="border-left: 4px solid #7928ca; box-shadow: 0 0 15px rgba(121, 40, 202, 0.2);"><b>Darknet & Leaks Index:</b><br><a class="card-link" href="https://intelx.io/?s={email_input}" target="_blank">ПОИСК В ДАРКНЕТЕ (IntelX)</a></div>
+            <div class="data-card" style="border-left: 4px solid #d73a49;"><b>Have I Been Pwned:</b><br><a class="card-link" href="https://haveibeenpwned.com/account/{email_input}" target="_blank">ГДЕ УТЕКЛА ПОЧТА</a></div>
             """, unsafe_allow_html=True)
-            
-        st.divider()
-        
+
+# 6. VISUAL ID
 elif menu == "👁 Visual ID (Лицо / AI)":
     st.header("👁 Идентификация личности по фото")
-    st.info("Внешние индексы для поиска совпадений:")
     st.markdown(f"""
-    <div class="data-card"><a class="card-link" href="https://facecheck.id/" target="_blank">FACECHECK.ID (Глобальный поиск)</a></div>
-    <div class="data-card"><a class="card-link" href="https://pimeyes.com/" target="_blank">PIMEYES (Поиск по лицам)</a></div>
-    """, unsafe_allow_html=True)
-
-elif menu == "📸 EXIF Анализ":
-    st.header("📸 Извлечение метаданных")
-    f = st.file_uploader("Загрузите файл (JPG):", type=['jpg', 'jpeg'])
-    if f:
-        img = Image.open(io.BytesIO(f.read()))
-        st.image(img, width=400)
-        exif_data = img._getexif()
-        if exif_data:
-            st.success("Метаданные найдены.")
-        else:
-            st.warning("Метаданные отсутствуют.")
+    <div class="data-card"><b>FaceCheck.ID:</b><br><a class="card-link" href="https://facecheck.id/" target="_blank">ГЛОБАЛЬНЫЙ ПОИСК ПО ЛИЦУ</a></div>
+    <div class="data-card"><b>PimEyes:</b><br><a class="card-link" href="https://pimeyes.com/" target="_blank">ИН
