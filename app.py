@@ -131,7 +131,7 @@ elif menu == "📞 Телефон (Глубокий анализ)":
             st.markdown(f"- [⚡ Кто звонил? (UA)](https://ktodzvoniv.com.ua/number/{clean_num})")
             st.markdown(f"- [🏢 Справочник (UA)](https://nomer-telefona.com.ua/nomer/{clean_num})")
 
-# --- МОДУЛЬ 3: АВТО (ОБХОД БЛОКИРОВОК) ---
+# --- МОДУЛЬ 3: АВТО (ОТЛАЖЕННЫЙ) ---
 elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
     st.header("🚗 Глубокая идентификация ТС")
     plate = st.text_input("Введите госномер (латиницей, например BM9971AX):").strip().upper().replace(" ", "")
@@ -139,7 +139,7 @@ elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
     if plate:
         st.subheader(f"🔎 Объект в разработке: {plate}")
         
-        # Секция с карточками обхода
+        # Информационные карточки
         st.markdown(f"""
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div class="data-card">
@@ -152,28 +152,27 @@ elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
                 <span class="card-title">ИСТОРИЯ РЕГИСТРАЦИЙ</span>
                 <a class="card-link" href="https://opendatabot.ua/auto/{plate}" target="_blank">ПРОВЕРИТЬ ВЛАДЕЛЬЦЕВ</a>
             </div>
+            <div class="data-card" style="border-left: 4px solid #ffcc00;">
+                <span class="card-icon">📱</span>
+                <span class="card-title">СВЯЗЬ С ВЛАДЕЛЬЦЕМ (GetContact)</span>
+                <a class="card-link" href="https://www.google.com/search?q={plate}+getcontact+site:facebook.com+OR+site:instagram.com" target="_blank">ИСКАТЬ КОНТАКТЫ</a>
+            </div>
         </div>
         """, unsafe_allow_html=True)
 
-       st.divider()
-        st.subheader("🖼 Фото-фиксация (Оперативный поток)")
+        st.divider()
+        st.subheader("🖼 Фото-фиксация (PlatesMania / DuckDuckGo)")
         
-        # Используем DuckDuckGo для поиска картинок - он работает в Iframe гораздо стабильнее
-        # И добавляем прямую ссылку на фото-базу номеров
+        # Прямая ссылка для надежности
+        st.markdown(f"👉 [Открыть фото в базе PlatesMania](https://platesmania.com/ua/search?nomer={plate})")
+        
+        # Попытка встроить DuckDuckGo (он реже блокирует)
         st.markdown(f"""
-        <div style="margin-bottom: 10px;">
-            <a href="https://platesmania.com/ua/search?nomer={plate}" target="_blank" style="color:#58a6ff; font-weight:bold;">
-                📸 Найти в базе фото-коров (PlatesMania)
-            </a>
-        </div>
         <iframe src="https://duckduckgo.com/?q={plate}+номер+авто+украина+platesmania&iax=images&ia=images" 
         width="100%" height="550" style="border:2px solid #d73a49; border-radius:12px; background-color: white;"></iframe>
         """, unsafe_allow_html=True)
-
-        # Модуль проверки страховки (тут 404 не бывает)
-        st.info("📑 Дополнительно: Проверьте VIN-код через MTSBU, если нужно найти страховую историю.")
-        st.markdown(f"[🔗 Прямой проброс в MTSBU](https://policy-web.mtsbu.ua/)")
-
+        
+        st.divider()
 # --- МОДУЛЬ 4: NICKNAME ---
 elif menu == "🌐 Nickname (Социальный след)":
     st.header("🌐 Глобальный поиск по Nickname")
