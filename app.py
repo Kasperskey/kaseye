@@ -184,7 +184,50 @@ elif menu == "🌐 Nickname (Социальный след)":
                 st.markdown(
                     f"""<div class="data-card"><b>{name}</b><br><a class="card-link" href="{url}" target="_blank">Открыть профиль</a></div>""",
                     unsafe_allow_html=True)
+# --- МОДУЛЬ 5: EMAIL (ГЛУБОКИЙ ПОИСК) ---
+elif menu == "📧 Email (Утечки и профили)":
+    st.header("📧 Разведка по адресу электронной почты")
+    email = st.text_input("Введите Email для анализа:", placeholder="example@gmail.com").strip()
+    
+    if email:
+        st.subheader(f"📊 Анализ объекта: {email}")
+        
+        # Разделяем на тех-данные и социальные связи
+        col_leaks, col_social = st.columns(2)
+        
+        with col_leaks:
+            st.markdown("### 🚨 Проверка утечек")
+            st.markdown(f"""
+            <div class="data-card" style="border-left: 4px solid #d73a49;">
+                <b>IntelX & DeHashed</b><br>
+                <a class="card-link" href="https://intelx.io/?s={email}" target="_blank">ИСКАТЬ ПАРОЛИ И ДАМПЫ</a><br>
+                <small>Поиск в слитых базах данных и даркнете.</small>
+            </div>
+            <div class="data-card">
+                <b>Have I Been Pwned</b><br>
+                <a class="card-link" href="https://haveibeenpwned.com/account/{email}" target="_blank">СПИСОК СКОМПРОМЕТИРОВАННЫХ САЙТОВ</a><br>
+                <small>Где именно «утекла» эта почта.</small>
+            </div>
+            """, unsafe_allow_html=True)
 
+        with col_social:
+            st.markdown("### 🌐 Социальный след")
+            st.markdown(f"""
+            <div class="data-card" style="border-left: 4px solid #58a6ff;">
+                <b>EPIOS (Google/YouTube/Maps)</b><br>
+                <a class="card-link" href="https://epios.com/?email={email}" target="_blank">НАЙТИ GOOGLE-ПРОФИЛЬ</a><br>
+                <small>Позволяет увидеть фото, отзывы в Google Maps и YouTube канал.</small>
+            </div>
+            <div class="data-card">
+                <b>Social Search (FB/IG/LinkedIn)</b><br>
+                <a class="card-link" href="https://www.google.com/search?q=site:linkedin.com+OR+site:facebook.com+OR+site:instagram.com+%22{email}%22" target="_blank">ПРЯМЫЕ УПОМИНАНИЯ В СОЦСЕТЯХ</a><br>
+                <small>Поиск привязки почты к открытым страницам.</small>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        st.divider()
+        st.info("💡 OSINT-совет: Если почта найдена в утечках, используйте никнейм из этой почты для поиска в модуле 'Nickname'.")
+        
 # --- МОДУЛЬ 5: VISUAL ID ---
 elif menu == "👁 Visual ID (Лицо / AI)":
     st.header("👁 Идентификация по лицу")
