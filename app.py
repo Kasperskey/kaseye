@@ -74,18 +74,45 @@ if menu == "👤 Розыск (Поиск по ФИО)":
         """, unsafe_allow_html=True)
 
 # 2. ТЕЛЕФОН
+# 2. ТЕЛЕФОН (TOTAL OSINT)
 elif menu == "📞 Телефон (Глубокий анализ)":
     st.header("📞 Глобальный анализ номера")
     phone = st.text_input("Введите номер (380...):").strip()
     if phone:
         num = "".join(filter(str.isdigit, phone))
         st.subheader(f"📊 Объект: +{num}")
-        c_left, c_right = st.columns(2)
-        with c_left:
-            st.markdown(f"""<div class="data-card"><b>Telegram Profile:</b><br><a class="card-link" href="https://t.me/+{num}" target="_blank">ОТКРЫТЬ ЧАТ</a></div>""", unsafe_allow_html=True)
-        with c_right:
-            st.markdown(f"""<div class="data-card" style="border-left: 4px solid #d73a49;"><b>LeakCheck (Связки):</b><br><a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">НАЙТИ ПРИВЯЗАННУЮ ПОЧТУ</a></div>""", unsafe_allow_html=True)
+        
+        c1, c2, c3 = st.columns(3)
+        
+        with c1:
+            st.markdown(f"""
+            <div class="data-card"><b>📱 MESSENGERS</b><br>
+                <a class="card-link" href="https://t.me/+{num}" target="_blank">TELEGRAM</a><br>
+                <a class="card-link" href="viber://chat?number={num}" target="_blank">VIBER</a><br>
+                <a class="card-link" href="https://wa.me/{num}" target="_blank">WHATSAPP</a>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        with c2:
+            st.markdown(f"""
+            <div class="data-card"><b>🌐 SOCIAL NETS</b><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22+site:vk.com" target="_blank">ВКОНТАКТЕ</a><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22+site:ok.ru" target="_blank">ОДНОКЛАССНИКИ</a><br>
+                <a class="card-link" href="https://www.facebook.com/search/top/?q={num}" target="_blank">FACEBOOK</a>
+            </div>
+            """, unsafe_allow_html=True)
+            
+        with c3:
+            st.markdown(f"""
+            <div class="data-card" style="border-left: 4px solid #d73a49;"><b>🚨 LEAKS & DARK</b><br>
+                <a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">LEAKCHECK (Связки)</a><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22+site:instagram.com" target="_blank">INSTAGRAM</a><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{num}%22" target="_blank">GLOBAL GOOGLE</a>
+            </div>
+            """, unsafe_allow_html=True)
 
+        st.divider()
+        st.info("💡 СОВЕТ: Viber откроется только если у тебя установлено приложение на ПК/Телефоне.")
 # 3. АВТО
 elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
     st.header("🚗 Идентификация транспортного средства")
