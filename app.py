@@ -118,7 +118,6 @@ elif menu == "📞 ТЕЛЕФОН":
 
         st.divider()
         st.info("💡 ПОДСКАЗКА: Если Google не дал ссылок, попробуй вбить номер в GetContact на телефоне. Если там есть теги — значит, номер живой и нужно искать по ФИО.")
-
 # 2. EMAIL
 elif menu == "📧 Email (Darknet Index)":
     st.header("📧 Глубокая разведка по Email")
