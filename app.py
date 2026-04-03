@@ -118,40 +118,44 @@ elif menu == "🌐 Nickname (Социальный след)":
 
 
 elif menu == "📧 Email (Утечки и профили)":
-    st.header("📧 Разведка по Email")
+    st.header("📧 Оперативная разведка по Email")
     email = st.text_input("Введите адрес (example@gmail.com):").strip()
     if email:
-        st.subheader(f"📊 Анализ объекта: {email}")
+        st.subheader(f"📊 Объект: {email}")
         u_nick = email.split('@')[0]
         
-        col_1, col_2 = st.columns(2)
-        with col_1:
-            st.markdown("### 🔍 Проверка аккаунтов")
+        c1, c2 = st.columns(2)
+        with c1:
+            st.markdown("### 🔍 Поиск аккаунтов (Live)")
+            # Самый надежный способ - поиск ника без жестких привязок
             st.markdown(f"""
             <div class="data-card">
-                <b>EPIOS / Google Search</b><br>
-                <a class="card-link" href="https://www.google.com/search?q=site:epios.com+%22{email}%22" target="_blank">НАЙТИ GOOGLE-ПРОФИЛЬ</a><br>
-                <small>Ищет фото и имя владельца через индексацию Google.</small>
+                <b>Global Search: {u_nick}</b><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+OR+%22{email}%22" target="_blank">ИСКАТЬ УПОМИНАНИЯ</a><br>
+                <small>Найдем всё: от форумов до старых досок объявлений.</small>
             </div>
             <div class="data-card">
-                <b>Sherlock Web Search</b><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+social+networks" target="_blank">ПОИСК НИКА В СЕТИ</a><br>
-                <small>Ищет никнейм {u_nick} на всех форумах и соцсетях.</small>
+                <b>Социальные сети</b><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+(site:instagram.com+OR+site:facebook.com+OR+site:twitter.com)" target="_blank">ПРОВЕРИТЬ ПРОФИЛИ</a><br>
+                <small>Ищем конкретно страницы в соцсетях.</small>
             </div>
             """, unsafe_allow_html=True)
             
         with col_2:
-            st.markdown("### 🚨 Утечки и Базы")
+            st.markdown("### 🚨 Базы утечек")
             st.markdown(f"""
             <div class="data-card" style="border-left: 4px solid #d73a49;">
-                <b>LeakCheck / HaveIBeenPwned</b><br>
-                <a class="card-link" href="https://haveibeenpwned.com/account/{email}" target="_blank">ГДЕ СЛИТА ПОЧТА</a>
+                <b>Have I Been Pwned</b><br>
+                <a class="card-link" href="https://haveibeenpwned.com/account/{email}" target="_blank">ГДЕ УТЕКЛА ПОЧТА</a>
             </div>
             <div class="data-card">
-                <b>IntelX (Даркнет)</b><br>
-                <a class="card-link" href="https://intelx.io/?s={email}" target="_blank">ПОИСК В ДАМПАХ</a>
+                <b>Сканер утечек (Mirror)</b><br>
+                <a class="card-link" href="https://leakcheck.net/search?type=email&check={email}" target="_blank">ПРОВЕРИТЬ ПАРОЛИ</a>
             </div>
             """, unsafe_allow_html=True)
+            
+        st.divider()
+        st.warning("⚔️ СОВЕТ ДЛЯ СЛУЖБЫ: Если поиск выдает 'ничего не найдено', значит цель не светила почту публично. Используй Telegram-боты (Глаз Бога и др.) — у них есть доступ к закрытым базам ГИБДД и банков, которых нет в Google.")
 
 elif menu == "👁 Visual ID (Лицо / AI)":
     st.header("👁 Идентификация личности по фото")
