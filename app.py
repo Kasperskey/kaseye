@@ -155,13 +155,19 @@ elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
         </div>
         """, unsafe_allow_html=True)
 
-        st.divider()
-        st.subheader("🖼 Фото-фиксация (Встроенный поток)")
+       st.divider()
+        st.subheader("🖼 Фото-фиксация (Оперативный поток)")
         
-        # Используем альтернативный движок поиска фото, который реже выдает ошибки
+        # Используем DuckDuckGo для поиска картинок - он работает в Iframe гораздо стабильнее
+        # И добавляем прямую ссылку на фото-базу номеров
         st.markdown(f"""
-        <iframe src="https://www.google.com/search?q={plate}+номер+авто+украина+site:platesmania.com+OR+site:topgir.com.ua&tbm=isch&igu=1" 
-        width="100%" height="550" style="border:2px solid #d73a49; border-radius:12px; background-color: #0d1117;"></iframe>
+        <div style="margin-bottom: 10px;">
+            <a href="https://platesmania.com/ua/search?nomer={plate}" target="_blank" style="color:#58a6ff; font-weight:bold;">
+                📸 Найти в базе фото-коров (PlatesMania)
+            </a>
+        </div>
+        <iframe src="https://duckduckgo.com/?q={plate}+номер+авто+украина+platesmania&iax=images&ia=images" 
+        width="100%" height="550" style="border:2px solid #d73a49; border-radius:12px; background-color: white;"></iframe>
         """, unsafe_allow_html=True)
 
         # Модуль проверки страховки (тут 404 не бывает)
