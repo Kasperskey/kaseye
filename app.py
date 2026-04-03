@@ -73,42 +73,51 @@ with st.sidebar:
 # --- ЛОГИКА МОДУЛЕЙ ---
 
 # 1. ТЕЛЕФОН (LIVE)
-if menu == "📞 Телефон (Live Analysis)":
-    st.header("📞 Живой анализ номера")
-    phone_input = st.text_input("Введите номер (380...):").strip()
+elif menu == "📞 ТЕЛЕФОН":
+    st.header("📞 Глубокий поиск аккаунтов")
+    phone = st.text_input("Введите номер (380...):").strip()
     
-    if phone_input:
-        num = "".join(filter(str.isdigit, phone_input))
-        short_num = num[-10:] if len(num) >= 10 else num
-        st.subheader(f"📊 Объект: +{num}")
+    if phone:
+        # Убираем все лишнее, оставляем только цифры
+        num = "".join(filter(str.isdigit, phone))
+        # Создаем разные форматы номера для поиска (с +38, без, с пробелами)
+        short = num[-10:] # 0505653901
+        formatted = f"{short[:3]} {short[3:6]} {short[6:8]} {short[8:]}" # 050 565 39 01
         
-        # Live Parsing
-        with st.spinner('Запрос к узлам связи...'):
-            geo_info = get_phone_info(num)
-            if geo_info and 'name' in geo_info:
-                st.markdown(f"""
-                <div class="live-box">
-                    <b style="color:#2ea043;">[LIVE DATA FOUND]</b><br>
-                    📍 <b>Регион:</b> {geo_info.get('country', {}).get('name', 'N/A')}, {geo_info.get('region', {}).get('name', 'N/A')}<br>
-                    📡 <b>Оператор:</b> {geo_info.get('0', {}).get('oper', 'N/A')}
-                </div>
-                """, unsafe_allow_html=True)
-
+        st.subheader(f"📊 Анализ объекта: +{num}")
+        
         c1, c2 = st.columns(2)
+        
         with c1:
             st.markdown(f"""
-            <div class="data-card"><b>📱 МЕССЕНДЖЕРЫ</b><br>
-                <a class="card-link" href="https://t.me/+{num}" target="_blank">TELEGRAM PROFILE</a><br>
-                <a class="card-link" href="https://wa.me/{num}" target="_blank">WHATSAPP CHAT</a>
+            <div class="data-card">
+                <b>🌍 ГЛОБАЛЬНЫЕ СОЦСЕТИ</b><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{short}%22+OR+%22{num}%22+site:facebook.com+OR+site:instagram.com+OR+site:twitter.com" target="_blank">🔎 Найти в FB / IG / TW</a><br>
+                <small>Ищет упоминание номера в мировых соцсетях.</small>
+            </div>
+            <div class="data-card">
+                <b>🇷🇺 СНГ СОЦСЕТИ (ВК / ОК)</b><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{short}%22+OR+%22{formatted}%22+site:vk.com+OR+site:ok.ru" target="_blank">🔎 Найти в VK / Одноклассники</a><br>
+                <small>Ищет номер в разных форматах написания (с пробелами и без).</small>
             </div>
             """, unsafe_allow_html=True)
+            
         with c2:
             st.markdown(f"""
-            <div class="data-card" style="border-left: 4px solid #d73a49;"><b>🚨 LEAKS & SOCIAL</b><br>
-                <a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">LEAKCHECK (Связки)</a><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{short_num}%22+site:facebook.com+OR+site:vk.com" target="_blank">ПОИСК В СОЦСЕТЯХ</a>
+            <div class="data-card" style="border-left: 4px solid #f59e0b;">
+                <b>📦 ОБЪЯВЛЕНИЯ И УСЛУГИ (OLX / IZI)</b><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{short}%22+OR+%22{formatted}%22+site:olx.ua+OR+site:izi.ua+OR+site:kabanchik.ua" target="_blank">🔎 Найти на OLX / Izi / Кабанчик</a><br>
+                <small>Тут часто находит реальные имена и города.</small>
+            </div>
+            <div class="data-card" style="border-left: 4px solid #d73a49;">
+                <b>🔑 ПАРОЛИ И УТЕЧКИ</b><br>
+                <a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">🔎 Проверить LeakCheck</a><br>
+                <small>Если номер был в базе — достанем Email.</small>
             </div>
             """, unsafe_allow_html=True)
+
+        st.divider()
+        st.info("💡 ПОДСКАЗКА: Если Google не дал ссылок, попробуй вбить номер в GetContact на телефоне. Если там есть теги — значит, номер живой и нужно искать по ФИО.")
 
 # 2. EMAIL
 elif menu == "📧 Email (Darknet Index)":
