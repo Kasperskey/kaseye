@@ -124,39 +124,27 @@ elif menu == "📧 Email (Утечки и профили)":
         st.subheader(f"📊 Объект: {email_input}")
         u_nick = email_input.split('@')[0]
         
-        # Исправленные имена колонок: c_left и c_right
         c_left, c_right = st.columns(2)
         
         with c_left:
-            st.markdown("### 🔍 Поиск аккаунтов (Live)")
             st.markdown(f"""
             <div class="data-card">
                 <b>Global Search: {u_nick}</b><br>
                 <a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+OR+%22{email_input}%22" target="_blank">ИСКАТЬ УПОМИНАНИЯ</a><br>
                 <small>Найдем всё: от форумов до старых досок объявлений.</small>
             </div>
-            <div class="data-card">
-                <b>Социальные сети</b><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+(site:instagram.com+OR+site:facebook.com+OR+site:twitter.com)" target="_blank">ПРОВЕРИТЬ ПРОФИЛИ</a><br>
-                <small>Ищем конкретно страницы в соцсетях.</small>
-            </div>
             """, unsafe_allow_html=True)
             
         with c_right:
-            st.markdown("### 🚨 Базы утечек")
             st.markdown(f"""
             <div class="data-card" style="border-left: 4px solid #d73a49;">
                 <b>Have I Been Pwned</b><br>
-                <a class="card-link" href="https://haveibeenpwned.com/account/{email_input}" target="_blank">ГДЕ УТЕКЛА ПОЧТА</a>
-            </div>
-            <div class="data-card">
-                <b>Сканер утечек (Mirror)</b><br>
-                <a class="card-link" href="https://leakcheck.net/search?type=email&check={email_input}" target="_blank">ПРОВЕРИТЬ ПАРОЛИ</a>
+                <a class="card-link" href="https://haveibeenpwned.com/account/{email_input}" target="_blank">ГДЕ УТЕКЛА ПОЧТА</a><br>
+                <small>Список баз, в которых засветился этот адрес.</small>
             </div>
             """, unsafe_allow_html=True)
             
         st.divider()
-        st.warning("⚔️ СОВЕТ: Если Google молчит, попробуй пробить никнейм в Telegram-ботах. Они видят то, что скрыто от поисковиков.")
         
 elif menu == "👁 Visual ID (Лицо / AI)":
     st.header("👁 Идентификация личности по фото")
