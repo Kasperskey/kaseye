@@ -131,45 +131,42 @@ elif menu == "📞 Телефон (Глубокий анализ)":
             st.markdown(f"- [⚡ Кто звонил? (UA)](https://ktodzvoniv.com.ua/number/{clean_num})")
             st.markdown(f"- [🏢 Справочник (UA)](https://nomer-telefona.com.ua/nomer/{clean_num})")
 
-# --- МОДУЛЬ 3: АВТО (ИНТЕРАКТИВНЫЙ) ---
+# --- МОДУЛЬ 3: АВТО (ОБХОД БЛОКИРОВОК) ---
 elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
-    st.header("🚗 Прямая идентификация ТС")
-    plate = st.text_input("Введите госномер (АА1111АА):").strip().upper().replace(" ", "")
+    st.header("🚗 Глубокая идентификация ТС")
+    plate = st.text_input("Введите госномер (латиницей, например BM9971AX):").strip().upper().replace(" ", "")
     
     if plate:
-        st.subheader(f"🔎 Результаты по объекту: {plate}")
+        st.subheader(f"🔎 Объект в разработке: {plate}")
         
-        # Ссылка на проверку (для быстрого доступа, пока парсер работает)
-        st.markdown(f"[🔗 Открыть полную карточку на OpenDataBot](https://opendatabot.ua/auto/{plate})")
-
-        # Пытаемся вывести фото через встраивание поисковика
-        col_img, col_data = st.columns([2, 1])
-        
-        with col_img:
-            st.info("🖼 Фотографии из базы (могут подгружаться 3-5 сек):")
-            # Используем Bing Images для прямого встраивания превью
-            st.markdown(f"""
-            <iframe src="https://www.bing.com/images/search?q={plate}+номер+авто+украина+site:autoria.biz+OR+site:platesmania.com" 
-            width="100%" height="500" style="border:2px solid #58a6ff; border-radius:10px; background-color: white;"></iframe>
-            """, unsafe_allow_html=True)
-            
-        with col_data:
-            st.markdown("### 📋 Техпаспорт")
-            # Здесь мы выводим кнопки быстрого поиска по разным реестрам внутри KASEYE
-            st.markdown(f"""
+        # Секция с карточками обхода
+        st.markdown(f"""
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
             <div class="data-card">
-                <b>🚔 ПРОВЕРКА ПО РЕЕСТРАМ:</b><br><br>
-                <a href="https://baza-gai.com.ua/nomer/{plate}" target="_blank" style="color:#58a6ff;">📑 Тех. характеристики (Baza-GAI)</a><br><br>
-                <a href="https://mvs.gov.ua/uk/servisi/perevirka-avto" target="_blank" style="color:#58a6ff;">👮 Проверка в розыске МВД</a><br><br>
-                <a href="https://policy-web.mtsbu.ua/" target="_blank" style="color:#58a6ff;">🛡️ Страховка и VIN (MTSBU)</a>
+                <span class="card-icon">📁</span>
+                <span class="card-title">ТЕХПАСПОРТ (Обход 404)</span>
+                <a class="card-link" href="https://baza-gai.com.ua/nomer/{plate}" target="_blank">СМОТРЕТЬ ХАРАКТЕРИСТИКИ</a>
             </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button("🚨 Сформировать рапорт по ТС"):
-                st.success("Данные сохранены в журнал.")
+            <div class="data-card">
+                <span class="card-icon">📜</span>
+                <span class="card-title">ИСТОРИЯ РЕГИСТРАЦИЙ</span>
+                <a class="card-link" href="https://opendatabot.ua/auto/{plate}" target="_blank">ПРОВЕРИТЬ ВЛАДЕЛЬЦЕВ</a>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
         st.divider()
-        st.caption("Если данные не подгрузились, проверьте правильность ввода (только латиница и цифры).")
+        st.subheader("🖼 Фото-фиксация (Встроенный поток)")
+        
+        # Используем альтернативный движок поиска фото, который реже выдает ошибки
+        st.markdown(f"""
+        <iframe src="https://www.google.com/search?q={plate}+номер+авто+украина+site:platesmania.com+OR+site:topgir.com.ua&tbm=isch&igu=1" 
+        width="100%" height="550" style="border:2px solid #d73a49; border-radius:12px; background-color: #0d1117;"></iframe>
+        """, unsafe_allow_html=True)
+
+        # Модуль проверки страховки (тут 404 не бывает)
+        st.info("📑 Дополнительно: Проверьте VIN-код через MTSBU, если нужно найти страховую историю.")
+        st.markdown(f"[🔗 Прямой проброс в MTSBU](https://policy-web.mtsbu.ua/)")
 
 # --- МОДУЛЬ 4: NICKNAME ---
 elif menu == "🌐 Nickname (Социальный след)":
