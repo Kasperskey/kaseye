@@ -73,14 +73,13 @@ if menu == "👤 Розыск (Поиск по ФИО)":
         <div class="data-card"><a class="card-link" href="https://clarity-project.info/search?q={safe_fn}" target="_blank">🔍 CLARITY PROJECT (Бизнес и связи)</a></div>
         """, unsafe_allow_html=True)
 
-# 2. ТЕЛЕФОН (ULTIMATE GOOGLE DORKS)
+# 2. ТЕЛЕФОН (ПРЯМОЙ ПРОБИВ СОЦСЕТЕЙ)
 elif menu == "📞 Телефон (Глубокий анализ)":
     st.header("📞 Глобальный анализ номера")
     phone = st.text_input("Введите номер (380...):").strip()
     if phone:
-        # Чистый номер без знаков
         num = "".join(filter(str.isdigit, phone))
-        # Короткий номер без кода страны (например, 0505653901)
+        # Чистый номер без кода страны (0505653901)
         short_num = num[-10:] if len(num) >= 10 else num
         
         st.subheader(f"📊 Объект: +{num}")
@@ -90,30 +89,31 @@ elif menu == "📞 Телефон (Глубокий анализ)":
         with c1:
             st.markdown(f"""
             <div class="data-card"><b>📱 МЕССЕНДЖЕРЫ</b><br>
-                <a class="card-link" href="https://t.me/+{num}" target="_blank">✅ TELEGRAM</a><br>
-                <a class="card-link" href="https://wa.me/{num}" target="_blank">✅ WHATSAPP</a>
+                <a class="card-link" href="https://t.me/+{num}" target="_blank">✅ TELEGRAM (Профиль)</a><br>
+                <a class="card-link" href="https://wa.me/{num}" target="_blank">✅ WHATSAPP (Фото/Статус)</a>
             </div>
-            <div class="data-card" style="border-left: 4px solid #58a6ff;"><b>🔎 ГЛОБАЛЬНЫЙ ПРОБИВ</b><br>
-                <a class="card-link" href="https://www.google.com/search?q=%22{short_num}%22+OR+%22{num}%22" target="_blank">ПОИСК ПО ВСЕМУ ИНТЕРНЕТУ</a><br>
-                <small>Ищет номер во всех форматах (объявления, форумы, статьи).</small>
+            <div class="data-card" style="border-left: 4px solid #4267B2;"><b>👥 FACEBOOK (Внутренний поиск)</b><br>
+                <a class="card-link" href="https://www.facebook.com/search/top/?q={num}" target="_blank">ИСКАТЬ ПО ПОЛНОМУ НОМЕРУ</a><br>
+                <a class="card-link" href="https://www.facebook.com/search/top/?q={short_num}" target="_blank">ИСКАТЬ ПО КОРОТКОМУ НОМЕРУ</a><br>
+                <small>Если не нашло, попробуй восстановить пароль по этому номеру — FB покажет имя и фото.</small>
             </div>
             """, unsafe_allow_html=True)
             
         with c2:
-            # Умный дорк для соцсетей: ищем короткий номер на конкретных сайтах
-            social_query = f"(site:facebook.com OR site:vk.com OR site:ok.ru OR site:instagram.com) %22{short_num}%22"
             st.markdown(f"""
-            <div class="data-card" style="border-left: 4px solid #7928ca;"><b>👤 СОЦСЕТИ (Обход защиты)</b><br>
-                <a class="card-link" href="https://www.google.com/search?q={social_query}" target="_blank">ИСКАТЬ В FB/VK/OK/IG</a><br>
-                <small>Используем короткий формат номера для обхода фильтров.</small>
+            <div class="data-card" style="border-left: 4px solid #4c75a3;"><b>🇷🇺 ВК / ОК (Прямые шлюзы)</b><br>
+                <a class="card-link" href="https://vk.com/search?c%5Bq%5D={num}&c%5Bsection%5D=people" target="_blank">ВКОНТАКТЕ (Поиск людей)</a><br>
+                <a class="card-link" href="https://ok.ru/search?st.query={num}" target="_blank">ОДНОКЛАССНИКИ (Поиск людей)</a><br>
+                <small>Важно: В ВК/ОК нужно быть залогиненным, иначе поиск ничего не выдаст.</small>
             </div>
-            <div class="data-card" style="border-left: 4px solid #d73a49;"><b>🚨 БАЗЫ УТЕЧЕК</b><br>
-                <a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">LEAKCHECK (Почта и Пароли)</a>
+            <div class="data-card" style="border-left: 4px solid #d73a49;"><b>🚨 DARKNET / LEAKS (База связей)</b><br>
+                <a class="card-link" href="https://leakcheck.net/search?type=phone&check={num}" target="_blank">LEAKCHECK (Найти Email владельца)</a><br>
+                <small>Если найдешь Email, то через него найдем соцсети на 100%.</small>
             </div>
             """, unsafe_allow_html=True)
 
         st.divider()
-        st.info("💡 Если Google выдает 'ничего не найдено', значит этот номер никогда не публиковался открыто. В таком случае поможет только GetContact (в телефоне) или платные OSINT-боты.")
+        st.info("💡 OSINT-ХАК: Зайди в Facebook/VK 'Забыл пароль', введи номер. Соцсеть сама выведет: 'Это вы? [ИМЯ/ФОТО]'. Это самый точный способ.")
 # 3. АВТО
 elif menu == "🚗 Авто-Модуль (ГРЗ / VIN)":
     st.header("🚗 Идентификация транспортного средства")
