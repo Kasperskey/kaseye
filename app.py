@@ -48,16 +48,10 @@ def get_decimal_from_dms(dms, ref):
         return -(degrees + minutes + seconds) if ref in ['S', 'W'] else degrees + minutes + seconds
     except: return None
 
-# --- SIDEBAR ---
+# --- SIDEBAR (БЕЗ СТИКЕРА) ---
 with st.sidebar:
     st.markdown("<div class='sidebar-title'>KASEYE</div>", unsafe_allow_html=True)
     st.markdown("<p class='online-indicator'>● СИСТЕМА: OPERATIONAL</p>", unsafe_allow_html=True)
-    st.divider()
-    
-    st.subheader("🖼 Статус-стикер")
-    image_file = st.file_uploader("Загрузить стикер:", type=['jpg', 'jpeg', 'png'], key="sticker_loader")
-    if image_file:
-        st.image(image_file, width=280)
     st.divider()
 
     menu = st.radio("ВЕКТОРЫ РАЗВЕДКИ:", [
@@ -142,7 +136,6 @@ elif menu == "📧 Email (Утечки и профили)":
             """, unsafe_allow_html=True)
         with col_social:
             st.markdown("### 🌐 Социальные связи")
-            # Автоматически вырезаем ник из почты
             u_nick = email.split('@')[0]
             st.markdown(f"""
             <div class="data-card" style="border-left: 4px solid #58a6ff;">
@@ -157,7 +150,7 @@ elif menu == "📧 Email (Утечки и профили)":
 
 elif menu == "👁 Visual ID (Лицо / AI)":
     st.header("👁 Идентификация личности по фото")
-    st.info("Загрузите фото на внешние индексы для поиска совпадений:")
+    st.info("Внешние индексы для поиска совпадений:")
     st.markdown(f"""
     <div class="data-card"><a class="card-link" href="https://facecheck.id/" target="_blank">FACECHECK.ID (Глобальный поиск)</a></div>
     <div class="data-card"><a class="card-link" href="https://pimeyes.com/" target="_blank">PIMEYES (Поиск по лицам)</a></div>
@@ -171,6 +164,6 @@ elif menu == "📸 EXIF Анализ":
         st.image(img, width=400)
         exif_data = img._getexif()
         if exif_data:
-            st.success("Метаданные найдены. Проверьте GPS координаты в блоке ниже.")
+            st.success("Метаданные найдены.")
         else:
             st.warning("Метаданные отсутствуют.")
