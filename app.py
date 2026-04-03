@@ -116,35 +116,40 @@ elif menu == "🌐 Nickname (Социальный след)":
         <div class="data-card"><b>Steam:</b> <a class="card-link" href="https://steamcommunity.com/id/{nick}" target="_blank">ОТКРЫТЬ</a></div>
         """, unsafe_allow_html=True)
 
+
 elif menu == "📧 Email (Утечки и профили)":
     st.header("📧 Разведка по Email")
     email = st.text_input("Введите адрес (example@gmail.com):").strip()
     if email:
         st.subheader(f"📊 Анализ объекта: {email}")
-        col_leaks, col_social = st.columns(2)
-        with col_leaks:
-            st.markdown("### 🚨 Утечки данных")
+        u_nick = email.split('@')[0]
+        
+        col_1, col_2 = st.columns(2)
+        with col_1:
+            st.markdown("### 🔍 Проверка аккаунтов")
             st.markdown(f"""
-            <div class="data-card" style="border-left: 4px solid #d73a49;">
-                <b>IntelX Даркнет</b><br>
-                <a class="card-link" href="https://intelx.io/?s={email}" target="_blank">ПОИСК ПАРОЛЕЙ</a>
+            <div class="data-card">
+                <b>EPIOS / Google Search</b><br>
+                <a class="card-link" href="https://www.google.com/search?q=site:epios.com+%22{email}%22" target="_blank">НАЙТИ GOOGLE-ПРОФИЛЬ</a><br>
+                <small>Ищет фото и имя владельца через индексацию Google.</small>
             </div>
             <div class="data-card">
-                <b>Have I Been Pwned</b><br>
-                <a class="card-link" href="https://haveibeenpwned.com/account/{email}" target="_blank">ГДЕ УТЕКЛА ПОЧТА</a>
+                <b>Sherlock Web Search</b><br>
+                <a class="card-link" href="https://www.google.com/search?q=%22{u_nick}%22+social+networks" target="_blank">ПОИСК НИКА В СЕТИ</a><br>
+                <small>Ищет никнейм {u_nick} на всех форумах и соцсетях.</small>
             </div>
             """, unsafe_allow_html=True)
-        with col_social:
-            st.markdown("### 🌐 Социальные связи")
-            u_nick = email.split('@')[0]
+            
+        with col_2:
+            st.markdown("### 🚨 Утечки и Базы")
             st.markdown(f"""
-            <div class="data-card" style="border-left: 4px solid #58a6ff;">
-                <b>OSINT Industries</b><br>
-                <a class="card-link" href="https://osint.industries/search?type=email&query={email}" target="_blank">ПРОВЕРИТЬ 100+ АККАУНТОВ</a>
+            <div class="data-card" style="border-left: 4px solid #d73a49;">
+                <b>LeakCheck / HaveIBeenPwned</b><br>
+                <a class="card-link" href="https://haveibeenpwned.com/account/{email}" target="_blank">ГДЕ СЛИТА ПОЧТА</a>
             </div>
             <div class="data-card">
-                <b>Поиск по никнейму ({u_nick})</b><br>
-                <a class="card-link" href="https://www.google.com/search?q=site:facebook.com+OR+site:instagram.com+{u_nick}" target="_blank">СВЯЗИ В СОЦСЕТЯХ</a>
+                <b>IntelX (Даркнет)</b><br>
+                <a class="card-link" href="https://intelx.io/?s={email}" target="_blank">ПОИСК В ДАМПАХ</a>
             </div>
             """, unsafe_allow_html=True)
 
