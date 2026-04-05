@@ -33,7 +33,7 @@ cloudinary.config(
     api_secret=CLOUDINARY_API_SECRET
 )
 
-st.set_page_config(page_title="kaseye 🕸️", layout="wide", page_icon="🕸️")
+st.set_page_config(page_title="kaseye", layout="wide", page_icon="🕸️")
 
 st.markdown("""
     <style>
@@ -364,9 +364,9 @@ def search_facecheck(image_bytes):
 
 with st.sidebar:
     st.markdown("<div class='sidebar-title'>KASEYE 🕸️</div>", unsafe_allow_html=True)
-    st.markdown("<p class='online-indicator'>● SYSTEM READY</p>", unsafe_allow_html=True)
+    st.markdown("<p class='online-indicator'>● SYSTEM ONLINE</p>", unsafe_allow_html=True)
     st.divider()
-    menu = st.radio("ВЕКТОРЫ РАЗВЕДКИ:", [
+    menu = st.radio("Возможности:", [
         "👤 Розыск (По ФИО)",
         "👁 Поиск по фото (По фото)",
         "📸 Мета-Данные Анализ",
@@ -376,7 +376,7 @@ with st.sidebar:
         "📞 Телефон (Номер)",
     ])
     st.divider()
-    st.caption("2026 Operational Terminal | v5.0")
+    st.caption("")
 
 # =============================================================
 # МОДУЛЬ 1: ФИО
