@@ -1,8 +1,8 @@
-opencv-python-headless
 streamlit
 pandas
 requests
+beautifulsoup4
+cloudinary
+Pillow
 folium
 streamlit-folium
-Pillow
-numpy
