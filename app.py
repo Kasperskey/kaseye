@@ -956,7 +956,7 @@ elif menu == "🚗 Авто (Номера / VIN)":
 
     # ── ГРЗ ──────────────────────────────────────────────────
     with tab_plate:
-        plate = st.text_input("Введите госномер (АА0000АА):", key="plate_input").strip().upper().replace(" ", "")
+        plate = st.text_input("Введите госномер (АА3333АА):", key="plate_input").strip().upper().replace(" ", "")
         if plate:
             st.subheader(f"🔎 Об'єкт: {plate}")
             c1, c2 = st.columns(2)
